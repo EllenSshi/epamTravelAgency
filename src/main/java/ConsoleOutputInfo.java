@@ -1,3 +1,5 @@
+import dao.Country;
+import dao.Customer;
 import services.CountryService;
 import services.CustomerService;
 
@@ -19,23 +21,23 @@ class ConsoleOutputInfo {
         int entity = 0;
         while (entity == 0) {
             entity = readActionChoosing();
-            if (entity == 6) {
+            if (entity == 9) {
                 entity = 0;
                 action = actionChoosing();
                 if (action == 5) {
                     exit();
                 }
             }
-            if (entity == 7) {
+            if (entity == 10) {
                 exit();
             }
         }
         if (action == 1 && entity == 1) {
-            List<String> l = new ArrayList<String>();
-            CountryService country = new CountryService();
-            l = country.getAllRows();
-            for (String row: l) {
-                System.out.println(row);
+            List<Country> countryList;
+            CountryService countryS = new CountryService();
+            countryList = countryS.getAllRows();
+            for (Country country: countryList) {
+                System.out.println(country.getId() + " - " + country.getName());
             }
         }
         if (action == 1 && entity == 2) {
@@ -57,42 +59,49 @@ class ConsoleOutputInfo {
                 System.out.println("Incorrect format!");
                 exit();
             }
-            List<String> l = new ArrayList<String>();
-            CountryService country = new CountryService();
-            l = country.getCountryVisitsCountByPeriod(startDate, endDate);
-            if (l.size() > 0) {
-                for (String row: l) {
-                    System.out.println(row);
+            List<Country> countryList;
+            CountryService countryServ = new CountryService();
+            countryList = countryServ.getCountryVisitsCountByPeriod(startDate, endDate);
+            if (countryList.size() > 0) {
+                for (Country country: countryList) {
+                    System.out.println(country.getName() + ": " + country.getCount());
                 }
             } else {
                 System.out.println("No matching data");
             }
         }
         if (action == 1 && entity == 3) {
-            List<String> l = new ArrayList<String>();
-            CustomerService customer = new CustomerService();
-            l = customer.getAllRows();
-            for (String row: l) {
-                System.out.println(row);
+            List<Customer> customerList;
+            CustomerService customerServ = new CustomerService();
+            customerList = customerServ.getAllRows();
+            for (Customer customer: customerList) {
+                System.out.println(customer.getId() + " - " +
+                        customer.getFirstname() + " " +
+                        customer.getLastname() + " " +
+                        customer.getPhone());
             }
         }
         if (action == 1 && entity == 4) {
-            List<String> l = new ArrayList<String>();
-            CustomerService customer = new CustomerService();
-            l = customer.getCustomerVisitsCount();
-            for (String row: l) {
-                System.out.println(row);
+            List<Customer> customerList;
+            CustomerService customerServ = new CustomerService();
+            customerList = customerServ.getCustomerVisitsCount();
+            for (Customer customer: customerList) {
+                System.out.println(customer.getFirstname() + " " +
+                        customer.getLastname() + " " +
+                        customer.getTourCount());
             }
         }
         if (action == 1 && entity == 5) {
-            List<String> l = new ArrayList<String>();
-            CustomerService customer = new CustomerService();
-            l = customer.getCustomerExcursions();
-            for (String row: l) {
-                System.out.println(row);
+            List<Customer> customerList;
+            CustomerService customerServ = new CustomerService();
+            customerList = customerServ.getCustomerExcursions();
+            for (Customer customer: customerList) {
+                System.out.println(customer.getId() + " " +
+                        customer.getFirstname() + " " +
+                        customer.getLastname() + " " +
+                        customer.getExcursions());
             }
         }
-
         exit();
     }
 
@@ -123,16 +132,22 @@ class ConsoleOutputInfo {
                 && readAction != 4
                 && readAction != 5
                 && readAction != 6
-                && readAction != 7) {
+                && readAction != 7
+                && readAction != 8
+                && readAction != 9
+                && readAction != 10) {
             System.out.println("Print a code of what you would like to read:");
             System.out.println("1 - All countries");
             System.out.println("2 - Countries with count of visiting within a period of time");
             System.out.println("3 - All customers");
             System.out.println("4 - Customers who took a tour with count of those tours");
             System.out.println("5 - Customers who took an excursion");
+            System.out.println("6 - Customers who took an excursion");
+            System.out.println("7 - Customers who took an excursion");
+            System.out.println("8 - Customers who took an excursion");
 
-            System.out.println("6 - step back to change action");
-            System.out.println("7 - to exit");
+            System.out.println("9 - step back to change action");
+            System.out.println("10 - to exit");
             Scanner in = new Scanner(System.in);
             try {
                 readAction = in.nextInt();

@@ -1,5 +1,6 @@
 package services;
 
+import dao.Customer;
 import dao.CustomerActionsDaoImpl;
 
 import java.sql.SQLException;
@@ -7,28 +8,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerService {
-    public List<String> getAllRows() throws SQLException {
-        List<String> l = new ArrayList<String>();
+    public List<Customer> getAllRows() throws SQLException {
+        List<Customer> customerList = new ArrayList<>();
         try {
             CustomerActionsDaoImpl customer = new CustomerActionsDaoImpl();
-            l = customer.getAllRows();
+            customerList = customer.getAllRows();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return l;
+        return customerList;
     }
 
-    public List<String> getCustomerVisitsCount() {
-        List<String> l = new ArrayList<String>();
+    public List<Customer> getCustomerVisitsCount() {
+        List<Customer> customerList;
         CustomerActionsDaoImpl customer = new CustomerActionsDaoImpl();
-        l = customer.getCustomerVisitsCount();
-        return l;
+        customerList = customer.getCustomerVisitsCount();
+        return customerList;
     }
 
-    public List<String> getCustomerExcursions() {
-        List<String> l = new ArrayList<String>();
+    public List<Customer> getCustomerExcursions() {
+        List<Customer> customerList;
         CustomerActionsDaoImpl customer = new CustomerActionsDaoImpl();
-        l = customer.getCustomerExcursions();
-        return l;
+        customerList = customer.getCustomerExcursions();
+        return customerList;
     }
 }

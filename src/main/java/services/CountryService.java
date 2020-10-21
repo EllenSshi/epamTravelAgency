@@ -1,27 +1,28 @@
 package services;
 
 import dao.CountryActionsDaoImpl;
+import dao.Country;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CountryService {
-    public List<String> getAllRows() throws SQLException {
-        List<String> l = new ArrayList<String>();
+    public List<Country> getAllRows() throws SQLException {
+        List<Country> countryList = new ArrayList<>();
         try {
             CountryActionsDaoImpl country = new CountryActionsDaoImpl();
-            l = country.getAllRows();
+            countryList = country.getAllRows();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return l;
+        return countryList;
     }
 
-    public List<String> getCountryVisitsCountByPeriod(String startDate, String endDate) {
-        List<String> l = new ArrayList<String>();
+    public List<Country> getCountryVisitsCountByPeriod(String startDate, String endDate) {
+        List<Country> countryList = new ArrayList<>();
         CountryActionsDaoImpl country = new CountryActionsDaoImpl();
-        l = country.getCountryVisitsCountByPeriod(startDate, endDate);
-        return l;
+        countryList = country.getCountryVisitsCountByPeriod(startDate, endDate);
+        return countryList;
     }
 }
