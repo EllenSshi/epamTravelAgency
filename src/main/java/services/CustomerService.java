@@ -8,6 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerService {
+    public int createNewCustomer(String firstname, String lastname, String phone) {
+        int code = 0;
+        CustomerActionsDaoImpl customer = new CustomerActionsDaoImpl();
+        code = customer.createNewCustomer(firstname, lastname, phone);
+        return code;
+    }
+
     public List<Customer> getAllRows() throws SQLException {
         List<Customer> customerList = new ArrayList<>();
         try {

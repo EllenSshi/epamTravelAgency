@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -117,5 +118,24 @@ public class CustomerActionsDaoImpl implements CustomerActionsDao {
             throwables.printStackTrace();
         }
         return customerList;
+    }
+
+    @Override
+    public int createNewCustomer(String firstname, String lastname, String phone) {
+        Customer customer = new Customer(firstname, lastname, phone);
+        int code = 0;
+        try {
+            Connection conn = (new ConnectToTravelAgencyDB()).setConnection();
+            PreparedStatement ps = conn.prepareStatement("insert into customers (firstname, lastname, phone) values (?, ?, ?)");
+            ps.setString(1, String.valueOf(customer.getFirstname()));
+            ps.setString(2, String.valueOf(customer.getLastname()));
+            ps.setString(3, String.valueOf(customer.getPhone()));
+            code = ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return code;
     }
 }

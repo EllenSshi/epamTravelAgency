@@ -1,7 +1,13 @@
+import dao.City;
 import dao.Country;
 import dao.Customer;
+import dao.Excursion;
+import dao.Tour;
+import services.CityService;
 import services.CountryService;
 import services.CustomerService;
+import services.ExcursionService;
+import services.TourService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -14,21 +20,20 @@ class ConsoleOutputInfo {
         if (action == 5) {
             exit();
         }
-        if (action == 2 || action == 3 || action == 4) {
+        if (action == 3 || action == 4) {
             System.out.println("This part is not ready yet..");
             exit();
         }
         int entity = 0;
-        while (entity == 0) {
+        if (action == 1) {
             entity = readActionChoosing();
-            if (entity == 9) {
-                entity = 0;
-                action = actionChoosing();
-                if (action == 5) {
-                    exit();
-                }
-            }
             if (entity == 10) {
+                exit();
+            }
+        }
+        if (action == 2) {
+            entity = addActionChoosing();
+            if (entity == 3) {
                 exit();
             }
         }
@@ -102,6 +107,69 @@ class ConsoleOutputInfo {
                         customer.getExcursions());
             }
         }
+        if (action == 1 && entity == 6) {
+            List<City> cityList;
+            CityService cityServ = new CityService();
+            cityList = cityServ.getAllRows();
+            for (City city: cityList) {
+                System.out.println(city.getId() + " - " +
+                        city.getName() + " (" +
+                        city.getCountry() + ")");
+            }
+        }
+        if (action == 1 && entity == 7) {
+            List<Tour> tourList;
+            TourService tourServ = new TourService();
+            tourList = tourServ.getAllRows();
+            for (Tour tour: tourList) {
+                System.out.println(tour.getId() + " - " +
+                        tour.getName() + " (" +
+                        tour.getCity() + ", " +
+                        tour.getCountry() + ")");
+            }
+        }
+        if (action == 1 && entity == 8) {
+            List<Excursion> excursionList;
+            ExcursionService excursionServ = new ExcursionService();
+            excursionList = excursionServ.getAllRows();
+            for (Excursion excursion: excursionList) {
+                System.out.println(excursion.getNum() + " - Excursion: " +
+                        excursion.getName() + ", Tour: " +
+                        excursion.getTour() + " (" +
+                        excursion.getCity() + ", " +
+                        excursion.getCountry() + ")");
+            }
+        }
+        if (action == 2 && entity == 1) {
+            System.out.println("Print customer firstname");
+            Scanner in = new Scanner(System.in);
+            String firstname = in.next();
+            System.out.println("Print customer lastname");
+            String lastname = in.next();
+            System.out.println("Print customer phone");
+            String phone = in.next();
+            int code = 0;
+            CustomerService customerServ = new CustomerService();
+            code = customerServ.createNewCustomer(firstname, lastname, phone);
+            if (code == 1) {
+                System.out.println("Success! Customer created.");
+            } else {
+                System.out.println("Error! Customer not created");
+            }
+        }
+        if (action == 2 && entity == 2) {
+            System.out.println("Print excursion name");
+            Scanner in = new Scanner(System.in);
+            String excursionName = in.next();
+            int code = 0;
+            ExcursionService excursionServ = new ExcursionService();
+            code = excursionServ.createNewExcursion(excursionName);
+            if (code == 1) {
+                System.out.println("Success! Excursion created.");
+            } else {
+                System.out.println("Error! Excursion not created");
+            }
+        }
         exit();
     }
 
@@ -110,8 +178,8 @@ class ConsoleOutputInfo {
         while (action != 1 && action != 2 && action != 3 && action != 4 && action != 5) {
             System.out.println("Print a code of what you would like:");
             System.out.println("1 - to read data from the database");
-            System.out.println("2 - to edit data in the database");
-            System.out.println("3 - to add new data into the database");
+            System.out.println("2 - to add data in the database");
+            System.out.println("3 - to edit new data into the database");
             System.out.println("4 - to delete data from the database");
             System.out.println("5 - to exit");
             Scanner in = new Scanner(System.in);
@@ -124,6 +192,23 @@ class ConsoleOutputInfo {
         return action;
     }
 
+    public static int addActionChoosing() {
+        int addAction = 0;
+        while (addAction != 1 && addAction != 2 && addAction != 3) {
+            System.out.println("Print a code of what you would like to add:");
+            System.out.println("1 - to add customer");
+            System.out.println("2 - to add excursion");
+            System.out.println("3 - to exit");
+            Scanner in = new Scanner(System.in);
+            try {
+                addAction = in.nextInt();
+            } catch (InputMismatchException exception) {
+                System.out.println("Please, type correct addAction code:");
+            }
+        }
+        return addAction;
+    }
+
     public static int readActionChoosing() {
         int readAction = 0;
         while (readAction != 1
@@ -134,7 +219,6 @@ class ConsoleOutputInfo {
                 && readAction != 6
                 && readAction != 7
                 && readAction != 8
-                && readAction != 9
                 && readAction != 10) {
             System.out.println("Print a code of what you would like to read:");
             System.out.println("1 - All countries");
@@ -142,11 +226,10 @@ class ConsoleOutputInfo {
             System.out.println("3 - All customers");
             System.out.println("4 - Customers who took a tour with count of those tours");
             System.out.println("5 - Customers who took an excursion");
-            System.out.println("6 - Customers who took an excursion");
-            System.out.println("7 - Customers who took an excursion");
-            System.out.println("8 - Customers who took an excursion");
+            System.out.println("6 - All cities");
+            System.out.println("7 - All tours");
+            System.out.println("8 - Excursions which are in tours");
 
-            System.out.println("9 - step back to change action");
             System.out.println("10 - to exit");
             Scanner in = new Scanner(System.in);
             try {

@@ -20,6 +20,15 @@ public class Customer {
         this.tourCount = 0;
     }
 
+    public Customer(String firstname, String lastname, String phone) {
+        this.id = 0;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.excursions = null;
+        this.tourCount = 0;
+    }
+
     public Customer(String firstname, String lastname, int tourCount) {
         this.excursions = null;
         this.id = 0;

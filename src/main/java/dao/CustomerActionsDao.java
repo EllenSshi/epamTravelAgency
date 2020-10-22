@@ -6,4 +6,6 @@ public interface CustomerActionsDao extends CommonDBActionsDao {
     List<Customer> getCustomerVisitsCount();
 
     List<Customer> getCustomerExcursions();
+
+    int createNewCustomer(String firstname, String lastname, String phone);
 }
