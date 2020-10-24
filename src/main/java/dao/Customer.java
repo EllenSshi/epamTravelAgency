@@ -5,9 +5,9 @@ import java.util.HashMap;
 
 public class Customer {
     private final int id;
-    private final String firstname;
-    private final String lastname;
-    private final String phone;
+    private  String firstname;
+    private  String lastname;
+    private  String phone;
     private final int tourCount;
     private ArrayList<HashMap<String, String>> excursions;
 
@@ -73,5 +73,17 @@ public class Customer {
 
     public void setExcursions(HashMap<String, String> excursion) {
         this.excursions.add(excursion);
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

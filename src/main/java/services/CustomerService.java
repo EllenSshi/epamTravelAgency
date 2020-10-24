@@ -15,6 +15,17 @@ public class CustomerService {
         return code;
     }
 
+    public Customer getCustomerById(int id) {
+        Customer customer = (new CustomerActionsDaoImpl()).getCustomerById(id);
+        return customer;
+    }
+
+    public int editCustomerById(int id, String firstname, String lastname, String phone) {
+        int code = 0;
+        code = (new CustomerActionsDaoImpl()).editCustomerById(id, firstname, lastname, phone);
+        return code;
+    }
+
     public List<Customer> getAllRows() throws SQLException {
         List<Customer> customerList = new ArrayList<>();
         try {

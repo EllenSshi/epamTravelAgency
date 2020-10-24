@@ -1,5 +1,6 @@
 package services;
 
+import dao.CityActionsDaoImpl;
 import dao.Tour;
 import dao.TourActionsDaoImpl;
 
@@ -17,5 +18,12 @@ public class TourService {
             throwables.printStackTrace();
         }
         return tourList;
+    }
+
+    public int deleteTourById(int id) {
+        int code = 0;
+        TourActionsDaoImpl tour = new TourActionsDaoImpl();
+        code = tour.deleteTourById(id);
+        return code;
     }
 }

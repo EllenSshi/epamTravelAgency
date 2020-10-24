@@ -1,5 +1,6 @@
 package services;
 
+import dao.CityActionsDaoImpl;
 import dao.CustomerActionsDaoImpl;
 import dao.Excursion;
 import dao.ExcursionActionsDaoImpl;
@@ -24,6 +25,13 @@ public class ExcursionService {
         int code = 0;
         ExcursionActionsDaoImpl excursion = new ExcursionActionsDaoImpl();
         code = excursion.createNewExcursion(name);
+        return code;
+    }
+
+    public int deleteExcursionById(int id) {
+        int code = 0;
+        ExcursionActionsDaoImpl excursion = new ExcursionActionsDaoImpl();
+        code = excursion.deleteExcursionById(id);
         return code;
     }
 }

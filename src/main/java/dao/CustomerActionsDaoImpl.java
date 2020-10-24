@@ -138,4 +138,48 @@ public class CustomerActionsDaoImpl implements CustomerActionsDao {
         }
         return code;
     }
+
+    @Override
+    public int editCustomerById(int id, String firstname, String lastname, String phone) {
+        int code = 0;
+        try {
+            Connection conn = (new ConnectToTravelAgencyDB()).setConnection();
+            PreparedStatement ps = conn.prepareStatement("update customers set firstname=?, lastname=?, phone=? where id=?");
+            ps.setString(1, String.valueOf(firstname));
+            ps.setString(2, String.valueOf(lastname));
+            ps.setString(3, String.valueOf(phone));
+            ps.setString(4, String.valueOf(id));
+            code = ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return code;
+    }
+
+    @Override
+    public Customer getCustomerById(int id) {
+        ResultSet rs = null;
+        Customer customer = null;
+        try {
+            Connection conn = (new ConnectToTravelAgencyDB()).setConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM customers where id = ?");
+            ps.setString(1, String.valueOf(id));
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                customer = new Customer(rs.getInt("id"),
+                        rs.getString("firstname"),
+                        rs.getString("lastName"),
+                        rs.getString("phone"));
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return customer;
+    }
 }

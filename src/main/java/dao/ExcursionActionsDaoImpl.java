@@ -52,4 +52,20 @@ public class ExcursionActionsDaoImpl implements ExcursionActionsDao {
         }
         return code;
     }
+
+    @Override
+    public int deleteExcursionById(int id) {
+        int code = 0;
+        try {
+            Connection conn = (new ConnectToTravelAgencyDB()).setConnection();
+            PreparedStatement ps = conn.prepareStatement("delete from excursions where id=? and id not in (select excursion_id from customer_excursions_in_tour)");
+            ps.setString(1, String.valueOf(id));
+            code = ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return code;
+    }
 }

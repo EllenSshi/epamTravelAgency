@@ -20,11 +20,13 @@ class ConsoleOutputInfo {
         if (action == 5) {
             exit();
         }
-        if (action == 3 || action == 4) {
-            System.out.println("This part is not ready yet..");
-            exit();
-        }
         int entity = 0;
+        if (action == 3) {
+            entity = editActionChoosing();
+            if (entity == 2) {
+                exit();
+            }
+        }
         if (action == 1) {
             entity = readActionChoosing();
             if (entity == 10) {
@@ -33,6 +35,12 @@ class ConsoleOutputInfo {
         }
         if (action == 2) {
             entity = addActionChoosing();
+            if (entity == 3) {
+                exit();
+            }
+        }
+        if (action == 4) {
+            entity = deleteActionChoosing();
             if (entity == 3) {
                 exit();
             }
@@ -170,6 +178,58 @@ class ConsoleOutputInfo {
                 System.out.println("Error! Excursion not created");
             }
         }
+        if (action == 4 && entity == 1) {
+            System.out.println("Print tour id to delete");
+            Scanner in = new Scanner(System.in);
+            int tourId = in.nextInt();
+            int code = 0;
+            TourService tourServ = new TourService();
+            code = tourServ.deleteTourById(tourId);
+            if (code == 1) {
+                System.out.println("Success! Tour deleted.");
+            } else {
+                System.out.println("Error! Tour cannot be deleted or does not exist");
+            }
+        }
+        if (action == 4 && entity == 2) {
+            System.out.println("Print excursion id to delete");
+            Scanner in = new Scanner(System.in);
+            int excursionId = in.nextInt();
+            int code = 0;
+            ExcursionService excursionServ = new ExcursionService();
+            code = excursionServ.deleteExcursionById(excursionId);
+            if (code == 1) {
+                System.out.println("Success! Excursion deleted.");
+            } else {
+                System.out.println("Error! Excursion cannot be deleted or does not exist");
+            }
+        }
+        if (action == 3 && entity == 1) {
+            System.out.println("Print customer id to edit");
+            Scanner in = new Scanner(System.in);
+            int customerId = in.nextInt();
+            int code = 0;
+            CustomerService custServ = new CustomerService();
+            Customer customer = custServ.getCustomerById(customerId);
+            System.out.println(customer.getId() + " - " +
+                    customer.getFirstname() + " " +
+                    customer.getLastname() + ", phone: " +
+                    customer.getPhone());
+            System.out.println("Print new customer values in format: firstname/lastname/phone");
+            String[] custData = in.next().split("/");
+            customer.setFirstname(custData[0]);
+            customer.setLastname(custData[1]);
+            customer.setPhone(custData[2]);
+            code = custServ.editCustomerById(customer.getId(),
+                    customer.getFirstname(),
+                    customer.getLastname(),
+                    customer.getPhone());
+            if (code == 1) {
+                System.out.println("Success! Customer updated.");
+            } else {
+                System.out.println("Error! Customer cannot be updated");
+            }
+        }
         exit();
     }
 
@@ -207,6 +267,39 @@ class ConsoleOutputInfo {
             }
         }
         return addAction;
+    }
+
+    public static int deleteActionChoosing() {
+        int addAction = 0;
+        while (addAction != 1 && addAction != 2 && addAction != 3) {
+            System.out.println("Print a code of what you would like to add:");
+            System.out.println("1 - delete tour by id");
+            System.out.println("2 - delete excursion by id");
+            System.out.println("3 - to exit");
+            Scanner in = new Scanner(System.in);
+            try {
+                addAction = in.nextInt();
+            } catch (InputMismatchException exception) {
+                System.out.println("Please, type correct addAction code:");
+            }
+        }
+        return addAction;
+    }
+
+    public static int editActionChoosing() {
+        int editAction = 0;
+        while (editAction != 1 && editAction != 2) {
+            System.out.println("Print a code of what you would like to add:");
+            System.out.println("1 - edit customer by id");
+            System.out.println("2 - exit");
+            Scanner in = new Scanner(System.in);
+            try {
+                editAction = in.nextInt();
+            } catch (InputMismatchException exception) {
+                System.out.println("Please, type correct editAction code:");
+            }
+        }
+        return editAction;
     }
 
     public static int readActionChoosing() {

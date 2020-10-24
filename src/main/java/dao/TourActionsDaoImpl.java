@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -30,5 +31,21 @@ public class TourActionsDaoImpl implements TourActionsDao {
             throwables.printStackTrace();
         }
         return tourList;
+    }
+
+    @Override
+    public int deleteTourById(int id) {
+        int code = 0;
+        try {
+            Connection conn = (new ConnectToTravelAgencyDB()).setConnection();
+            PreparedStatement ps = conn.prepareStatement("delete from tours where id = ? and id not in (select tour_id from customer_in_tour)");
+            ps.setString(1, String.valueOf(id));
+            code = ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return code;
     }
 }
